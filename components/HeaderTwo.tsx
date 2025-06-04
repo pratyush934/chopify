@@ -12,9 +12,9 @@ const HeaderTwo = () => {
   };
 
   return (
-    <div className="bg-black w-full">
-      <div className="bg-black shadow-sm overflow-hidden flex justify-between items-center">
-        <div className="flex flex-wrap justify-between items-center px-4 py-3 w-full">
+    <div className="w-full">
+      <div className="bg-black shadow-sm overflow-hidden flex justify-center items-center">
+        <div className="flex flex-wrap justify-center items-center px-4 py-3 w-full">
           {/* Mobile menu button */}
           <div className="md:hidden flex w-full justify-end">
             <Button 
@@ -32,7 +32,7 @@ const HeaderTwo = () => {
           </div>
 
           {/* Desktop menu */}
-          <div className="hidden md:flex flex-wrap md:flex-nowrap items-center justify-between gap-1 md:gap-2 max-w-7xl  scrollbar-hide">
+          <div className="hidden md:flex flex-wrap md:flex-nowrap items-center justify-between gap-1 md:gap-2 max-w-7xl scrollbar-hide">
             <Button
               variant="ghost"
               className="text-white text-lg font-medium rounded-md px-4 py-2 hover:underline"

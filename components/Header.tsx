@@ -27,7 +27,7 @@ import { Button } from "./ui/button";
 
 const Header = () => {
   return (
-    <div className="bg-black w-full shadow-md fixed px-6 py-3 z-50">
+    <div className="bg-black w-full shadow-md fixed px-6 py-3 z-50 top-0">
       <nav className="flex justify-between items-center mx-auto max-w-7xl">
         <Link href={"/"}>
           <Image src={"/logo.png"} alt="no-log" height={40} width={200} />
@@ -35,9 +35,14 @@ const Header = () => {
         <div className="flex justify-center gap-6">
           <div>
             <Link href={"/orders"}>
-              <Button variant={"outline"} className="h-10">
-                <SendToBack />
-                Your Orders
+              <Button
+                variant={"outline"}
+                className="h-10 hidden md:block lg:block"
+              >
+                <div className="flex justify-between">
+                  <SendToBack className="mr-2 mt-0.5"/>
+                  Your Orders
+                </div>
               </Button>
             </Link>
           </div>

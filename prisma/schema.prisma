@@ -20,10 +20,10 @@ model User {
   birthDay    DateTime
 
   //address
-  address  Address[]
-  orders   Order[]
-  cart     Cart[]
-  Payement Payement[]
+  address Address[]
+  orders  Order[]
+  cart    Cart[]
+  Payment Payment[]
 }
 
 model Address {
@@ -31,8 +31,8 @@ model Address {
   streetName String
   postOffice String
   zipCode    String
-  District   String
-  State      String
+  district   String
+  state      String
   isDefault  Boolean
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -42,10 +42,9 @@ model Address {
 }
 
 model Category {
-  id        String  @id @default(cuid())
-  name      String
-  slug      String?
-  productId String?
+  id   String  @id @default(cuid())
+  name String
+  slug String?
 
   product Product[]
 }
@@ -67,35 +66,47 @@ model Product {
   categoryId String?
   CartItem   CartItem[]
   OrderItem  OrderItem[]
+
+  @@index([categoryId])
+  @@index([slug])
 }
 
 model Cart {
-  id     String  @id @default(cuid())
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  id     String @id @default(cuid())
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
 
   CartItem CartItem[]
+
+  @@index([userId])
 }
 
 model CartItem {
-  id        String   @id @default(cuid())
-  cart      Cart     @relation(fields: [cartId], references: [id])
+  id        String      @id @default(cuid())
+  cart      Cart        @relation(fields: [cartId], references: [id])
   cartId    String
-  product   Product  @relation(fields: [productId], references: [id])
+  product   Product     @relation(fields: [productId], references: [id])
   productId String
-  addedAt   DateTime @default(now())
+  addedAt   DateTime    @default(now())
   quantity  Int
+  status    StockStatus
+
+  @@index([cartId])
+  @@index([productId])
 }
 
 model Order {
-  id          String      @id @default(cuid())
+  id          String   @id @default(cuid())
   totalAmount BigInt
   status      Status
-  User        User?       @relation(fields: [userId], references: [id])
-  userId      String?
-  PayementId  String
-  Payement    Payement[]
-  OrderItem   OrderItem[]
+  createdAt   DateTime @default(now())
+
+  User      User        @relation(fields: [userId], references: [id])
+  userId    String
+  Payment   Payment[]
+  OrderItem OrderItem[]
+
+  @@index([userId])
 }
 
 model OrderItem {
@@ -107,30 +118,41 @@ model OrderItem {
   quantity    Int
   unitPrice   Int
   giftMessage GiftMessage[]
+
+  @@index([orderId])
+  @@index([productId])
 }
 
-model Payement {
-  id             String         @id @default(cuid())
-  user           User           @relation(fields: [userId], references: [id])
-  userId         String
-  PayementId     String
-  amount         Int
-  currency       Currency
-  PayementStatus PayementStatus
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  Order          Order          @relation(fields: [orderId], references: [id])
-  orderId        String
+model Payment {
+  id            String        @id @default(cuid())
+  user          User          @relation(fields: [userId], references: [id])
+  userId        String
+  paymentId     String
+  amount        Int
+  currency      Currency
+  PaymentStatus PaymentStatus
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  Order         Order         @relation(fields: [orderId], references: [id])
+  orderId       String
+
+  @@index([userId])
+  @@index([orderId])
 }
 
 model GiftMessage {
-  id          String     @id @default(cuid())
+  id          String    @id @default(cuid())
   message     String
-  OrderItem   OrderItem? @relation(fields: [orderItemId], references: [id])
-  orderItemId String?
+  OrderItem   OrderItem @relation(fields: [orderItemId], references: [id])
+  orderItemId String
 }
 
-enum PayementStatus {
+enum StockStatus {
+  OUT
+  IN
+}
+
+enum PaymentStatus {
   PENDING
   PROCESS
   DONE
